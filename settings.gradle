@@ -1,0 +1,3 @@
+include ':signature'
+include ':app'
+rootProject.name = "AndroidSignatureView"
