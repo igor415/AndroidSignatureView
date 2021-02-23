@@ -66,7 +66,9 @@ class SignatureView @JvmOverloads constructor(
         }
         return true
     }
-    private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
+    private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop/2
+    private var descriptionText = "Signature"
+    private var showDescription: Boolean = true
 
     private fun touchMove() {
         val dx = Math.abs(motionTouchEventX - currentX)
@@ -104,6 +106,11 @@ class SignatureView @JvmOverloads constructor(
             canvas?.drawLine((inset*4).toFloat(), height - (inset*4).toFloat(),
                 width - (inset*4).toFloat(), height - (inset*4).toFloat(), paintLine)
         }
+        if(showDescription){
+            paintLine.textSize = 24f
+            paintLine.textAlign = Paint.Align.CENTER
+            canvas?.drawText(descriptionText,width/2.toFloat(),height - (inset*2.8).toFloat(),paintLine)
+        }
 
     }
 
@@ -140,6 +147,7 @@ class SignatureView @JvmOverloads constructor(
         extraCanvas = Canvas(extraBitmap)
         extraCanvas.drawColor(backgroundCol)
         fullPath = Path()
+        invalidate()
     }
 
     fun isSignatureEmpty(): Boolean {
@@ -152,6 +160,26 @@ class SignatureView @JvmOverloads constructor(
 
     fun hideSignatureLine(){
         showLine = false
+    }
+
+    fun setOutlineWidth(number: Float){
+        outlinePaint.strokeWidth = number
+    }
+
+    fun setDescriptionText(text: String){
+        descriptionText = text
+    }
+
+    fun hideDescriptionText(){
+        showDescription = false
+    }
+
+    fun showSignatureLine(){
+        showLine = true
+    }
+
+    fun showDescriptionText(){
+        showDescription = true
     }
 
 }
